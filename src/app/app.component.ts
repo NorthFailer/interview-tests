@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CardType, DataService } from './data.service';
+import { DataService } from './data.service';
 
 
 @Component({
@@ -9,8 +9,7 @@ import { CardType, DataService } from './data.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  readonly options: CardType[] = ['KEK', 'OMEGA', 'PEPEGA', 'OMEGA'];
-  readonly control = new FormControl(this.options[0]);
+  readonly control = new FormControl();
 
   constructor(
     private dataService: DataService,
@@ -20,9 +19,9 @@ export class AppComponent {
 
 
   /*
-  *
-  * Get data on user select input, filter data by "CardType"
-  * Show name, and ID on card template of filtered items
-  *
+  * On user input number(N) request Cards from id starts from 1 to N
+  * Show all responded Cards in template in the same time
+  * Keep the cards in order 1 to N
+  * Skip cards with error response
   * */
 }
