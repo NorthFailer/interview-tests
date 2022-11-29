@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CardType, DataService } from './data.service';
+import { map, startWith, switchMap } from 'rxjs';
 
 
 @Component({
@@ -11,6 +12,13 @@ import { CardType, DataService } from './data.service';
 export class AppComponent {
   readonly options: CardType[] = ['KEK', 'OMEGA', 'PEPEGA', 'OMEGA'];
   readonly control = new FormControl(this.options[0]);
+
+  readonly cards$ = this.control.valueChanges.pipe(
+    startWith(this.control.value),
+    switchMap((cardType) => this.dataService.getData().pipe(
+      map((cards) => cards.filter((card) => card.type === cardType)),
+    )),
+  );
 
   constructor(
     private dataService: DataService,
