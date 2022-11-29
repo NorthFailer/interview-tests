@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DataService } from './data.service';
+import { Card, DataService } from './data.service';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 
 
 @Component({
@@ -11,12 +12,21 @@ import { DataService } from './data.service';
 export class AppComponent {
   readonly control = new FormControl();
 
+  readonly cards$ = this.control.valueChanges.pipe(
+    map((number) => Array(number).fill(undefined).map((_, number) => number + 1)),
+    switchMap((numbers: Array<number>) =>
+      forkJoin(numbers.map((cardId) =>
+        this.dataService.getCard(cardId).pipe(
+          catchError(() => of(null)),
+        )))),
+    map((cards: (Card | null)[]) => cards.filter((card): card is Card => !!card)),
+  );
+
   constructor(
     private dataService: DataService,
   ) {
 
   }
-
 
   /*
   * On user input number(N) request Cards from id starts from 1 to N

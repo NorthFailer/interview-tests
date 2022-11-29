@@ -1,4 +1,4 @@
 <input type="number" [formControl]="control"/>
-<div>card</div>
+<div *ngFor="let card of cards$ | async">{{ card.name }}</div>
 
 <router-outlet></router-outlet>
