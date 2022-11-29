@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DataService } from './data.service';
+import { Card, DataService } from './data.service';
+import { catchError, concatMap, EMPTY, map } from "rxjs";
 
 
 @Component({
@@ -10,6 +11,20 @@ import { DataService } from './data.service';
 })
 export class AppComponent {
   readonly control = new FormControl();
+  cards: Card[] = [];
+
+  cards$ = this.control.valueChanges
+    .pipe(concatMap((controlValue) => this.dataService.getCard(controlValue)
+        .pipe(
+          map((card) => {
+            this.cards.push(card);
+            }
+          )
+        ).pipe(
+          // catchError([])
+        )
+      )
+    ).subscribe();
 
   constructor(
     private dataService: DataService,
