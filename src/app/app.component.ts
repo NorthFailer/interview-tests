@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { CardType, DataService } from './data.service';
+import { DataService } from './data.service';
 
 
 @Component({
@@ -9,8 +8,6 @@ import { CardType, DataService } from './data.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  readonly options: CardType[] = ['KEK', 'OMEGA', 'PEPEGA', 'OMEGA'];
-  readonly control = new FormControl(this.options[0]);
 
   constructor(
     private dataService: DataService,
