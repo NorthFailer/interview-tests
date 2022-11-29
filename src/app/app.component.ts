@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Card, CardType, DataService } from './data.service';
+import { map } from "rxjs";
 
 
 @Component({
@@ -22,13 +23,27 @@ export class AppComponent {
 
   }
 
-  // approach 1: honest without google
-
   ngOnInit() {
     this.dataService
       .getData()
       .subscribe((cards) => this.cards = cards);
+
+    this.sortedCards = this.filterCards(this.cards, this.control.getRawValue())
+
+    this.control.valueChanges.pipe(
+      map((val) => {
+        this.sortedCards = this.filterCards(this.cards, val)
+      })
+    ).subscribe()
   }
+
+  filterCards(cards: Card[], type: CardType | null): Card[] {
+    if (!type) return cards;
+    return cards.filter((card) => card.type === type)
+  }
+
+  // ngAfterViewInit() {
+  // }
 
 /*  ngAfterViewChecked() {
     const userInput = document.getElementsByTagName("select");
@@ -36,9 +51,9 @@ export class AppComponent {
     this.sortedCards = this.cards.filter((card) => card.type === selectedTypeOption);
   }*/
 
-  onOptionChange(event: Event) {
-    this.sortedCards = this.sortedCards = this.cards.filter((card) => card.type === (<HTMLSelectElement>event.target).value);
-  }
+  // onOptionChange(event: Event) {
+  //   this.sortedCards = this.sortedCards = this.cards.filter((card) => card.type === (<HTMLSelectElement>event.target).value);
+  // }
 
   /* void
     ngAfterViewInit() {

@@ -1,6 +1,5 @@
 <select
   [formControl]="control"
-  (click)="onOptionChange($event)"
 >
   <option
     *ngFor="let option of options"
@@ -11,9 +10,11 @@
 </select>
 
 <div>card</div>
+
 <div class="cards" *ngFor="let card of sortedCards">
   {{ card.id }}
   {{ card.name }}
 </div>
+
 
 <router-outlet></router-outlet>
