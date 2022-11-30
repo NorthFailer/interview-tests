@@ -3,7 +3,7 @@
   <option *ngFor="let id of cardIds" [value]="id">{{ id }}</option>
 </select>
 
-<div *ngIf="controlSubscription | async as card">
+<div *ngIf="card$ | async as card">
   {{ card.name }}
 </div>
 

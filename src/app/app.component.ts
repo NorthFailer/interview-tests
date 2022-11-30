@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Card, DataService } from './data.service';
+import { DataService } from './data.service';
 import { FormControl } from '@angular/forms';
-import { catchError, mergeMap, of } from "rxjs";
+import { map, startWith, Subject, switchMap, takeUntil } from "rxjs";
 
 
 @Component({
@@ -13,13 +13,16 @@ export class AppComponent {
 
   readonly cardIds: ReadonlyArray<number> = [1, 2, 3, 5];
   readonly control = new FormControl();
-  readonly mockCard: Card = {name: '', id: -0, type: 'KEK'}
 
-  controlSubscription = this.control.valueChanges.pipe(
-    mergeMap((value) => this.dataService.getDataById(value).pipe(catchError(() => of(this.mockCard))))
-  )
+  readonly card$ = this.control.valueChanges.pipe(
+    map((value: string) => parseInt(value)),
+    switchMap((id) => this.dataService.getDataById(id).pipe(
+      startWith(null),
+      takeUntil(this.forceStopRequest$),
+    )),
+  );
 
-  // в качестве обработки ошибки должен быть ретрай, а не of
+  readonly forceStopRequest$ = new Subject<void>();
 
   constructor(
     private dataService: DataService,
@@ -28,7 +31,7 @@ export class AppComponent {
   }
 
   onStopClick() {
-    // complete()
+    this.forceStopRequest$.next();
   }
 
   /*
