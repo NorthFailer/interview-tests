@@ -1,4 +1,7 @@
 <input [formControl]="control" type="text"/>
-<div>card</div>
+<div *ngFor="let card of cards">
+  {{ card.name }}
+  {{ card.id }}
+</div>
 
 <router-outlet></router-outlet>

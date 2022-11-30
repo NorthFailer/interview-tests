@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { DataService } from './data.service';
+import { Card, DataService } from './data.service';
 import { FormControl } from '@angular/forms';
 import { AnalyticsService } from './analytics.service';
+import { concatMap, tap } from "rxjs";
 
 
 @Component({
@@ -9,9 +10,18 @@ import { AnalyticsService } from './analytics.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent{
 
   control = new FormControl('');
+  cards: Card[] = [];
+
+  card$ = this.control.valueChanges.pipe(
+    tap((value) => this.analyticsService.sendAnalytics(value || '').subscribe()),
+    concatMap(
+      (inputValue) => this.dataService
+        .getData(inputValue || '')
+    )
+  ).subscribe((card) => this.cards.push(card));
 
   constructor(
     private dataService: DataService,
