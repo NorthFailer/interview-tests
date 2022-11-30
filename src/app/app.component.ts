@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card, DataService } from './data.service';
+import { catchError, concatMap, from, of } from "rxjs";
 
 
 @Component({
@@ -35,7 +36,10 @@ export class AppComponent implements OnInit {
   * Keep cards order
   * */
   updateCards() {
-
+    from(this.ids)
+      .pipe(
+        concatMap((id) => this.dataService.getData(id).pipe(catchError(() => of(this.DEFAULT_CARD)))),
+      )
+      .subscribe((card) => this.cards.push(card));
   }
-
 }
