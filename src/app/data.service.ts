@@ -9,30 +9,32 @@ export interface Card {
   type: CardType;
 }
 
+const cards: Card[] = [
+  {
+    name: 'One',
+    id: 1,
+    type: 'PEPEGA',
+  },
+  {
+    name: 'Three',
+    id: 3,
+    type: 'KEK',
+  },
+  {
+    name: 'Two',
+    id: 2,
+    type: 'ЧЕБУРРЕК',
+  },
+  {
+    name: 'Five',
+    id: 5,
+    type: 'ЧЕБУРРЕК',
+  },
+];
+
 @Injectable({ providedIn: 'root' })
 export class DataService {
   getData(): Observable<Card[]> {
-    return of([
-      {
-        name: 'One',
-        id: 1,
-        type: 'PEPEGA',
-      },
-      {
-        name: 'Three',
-        id: 3,
-        type: 'KEK',
-      },
-      {
-        name: 'Two',
-        id: 2,
-        type: 'ЧЕБУРРЕК',
-      },
-      {
-        name: 'Five',
-        id: 5,
-        type: 'ЧЕБУРРЕК',
-      },
-    ]);
+    return of(cards);
   }
 }
