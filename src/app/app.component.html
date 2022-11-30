@@ -1,5 +1,5 @@
 <input [formControl]="control" type="text"/>
-<div *ngFor="let card of cards">
+<div *ngIf="card$ | async as card">
   {{ card.name }}
   {{ card.id }}
 </div>

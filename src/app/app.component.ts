@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Card, DataService } from './data.service';
+import { DataService } from './data.service';
 import { FormControl } from '@angular/forms';
 import { AnalyticsService } from './analytics.service';
-import { concatMap, tap } from "rxjs";
+import { concatMap, filter, tap } from "rxjs";
 
 
 @Component({
@@ -13,15 +13,12 @@ import { concatMap, tap } from "rxjs";
 export class AppComponent{
 
   control = new FormControl('');
-  cards: Card[] = [];
 
-  card$ = this.control.valueChanges.pipe(
-    tap((value) => this.analyticsService.sendAnalytics(value || '').subscribe()),
-    concatMap(
-      (inputValue) => this.dataService
-        .getData(inputValue || '')
-    )
-  ).subscribe((card) => this.cards.push(card));
+  readonly card$ = this.control.valueChanges.pipe(
+    filter((value): value is string => !value),
+    tap((value) => this.analyticsService.sendAnalytics(value).subscribe()),
+    concatMap((value) => this.dataService.getData(value)),
+  );
 
   constructor(
     private dataService: DataService,
