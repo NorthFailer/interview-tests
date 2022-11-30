@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { DataService } from './data.service';
+import { Component, OnInit } from '@angular/core';
+import { Card, DataService } from './data.service';
 
 
 @Component({
@@ -7,7 +7,17 @@ import { DataService } from './data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  cards = new Array<Card>();
+
+  readonly ids = [1, 2, 4];
+
+  private readonly DEFAULT_CARD: Card = {
+    id: -1,
+    name: 'DEFAULT',
+    type: 'ЧЕБУРРЕК',
+  };
 
   constructor(
     private dataService: DataService,
@@ -15,11 +25,17 @@ export class AppComponent {
 
   }
 
+  ngOnInit() {
+    this.updateCards();
+  }
 
   /*
-  *
-  * Get data on user select input, filter data by "CardType"
-  * Show name, and ID on card template of filtered items
-  *
+  * Implement method to update cards by existing ids
+  * Show DEFAULT_CARD on place of error card response
+  * Keep cards order
   * */
+  updateCards() {
+
+  }
+
 }
