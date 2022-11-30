@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from './data.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -9,17 +10,22 @@ import { DataService } from './data.service';
 })
 export class AppComponent {
 
+  readonly cardIds: ReadonlyArray<number> = [1, 2, 3, 5];
+  readonly control = new FormControl();
+
   constructor(
     private dataService: DataService,
   ) {
 
   }
 
+  onStopClick() {
+
+  }
 
   /*
-  *
-  * Get data on user select input, filter data by "CardType"
-  * Show name, and ID on card template of filtered items
+  * On user input select get Card data and show name in template
+  * If user press stop button - cancel card request completely and clear current shown card
   *
   * */
 }

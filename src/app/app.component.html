@@ -1,3 +1,10 @@
+<select [formControl]="control">
+  <option selected disabled>SELECT OPTION...</option>
+  <option *ngFor="let id of cardIds" [value]="id">{{ id }}</option>
+</select>
+
 <div>card</div>
+
+<button (click)="onStopClick()">STOP</button>
 
 <router-outlet></router-outlet>
