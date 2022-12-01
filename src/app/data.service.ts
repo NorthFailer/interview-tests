@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of, throwError } from 'rxjs';
 
 export type CardType = 'KEK' | 'ЧЕБУРРЕК' | 'PEPEGA' | 'OMEGA';
 
@@ -34,7 +34,15 @@ const cards: Card[] = [
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-  getData(): Observable<Card[]> {
-    return of(cards);
+  getData(id: number): Observable<Card> {
+    const card = cards[id];
+
+    if (card) {
+      return of(card).pipe(
+        delay(Math.random() * 1000),
+      );
+    } else {
+      return throwError(() => `[404] Card ID: ${id} not found!`);
+    }
   }
 }
